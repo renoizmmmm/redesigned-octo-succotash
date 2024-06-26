@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+        }
+
+        .infinity {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(45deg, #f06, transparent);
+            border-radius: 50%;
+            animation: rotate 4s linear infinite;
+        }
+
+        .infinity::before,
+        .infinity::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        .infinity::before {
+            transform: rotate(120deg);
+        }
+
+        .infinity::after {
+            transform: rotate(240deg);
+        }
+
+        .planet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .jupiter {
+            background: url('https://example.com/jupiter.png') no-repeat center center / cover;
+            top: 40px;
+            left: 90px;
+            animation: jupiterOrbit 4s linear infinite;
+        }
+
+        .saturn {
+            background: url('https://example.com/saturn.png') no-repeat center center / cover;
+            top: 40px;
+            left: 90px;
+            animation: saturnOrbit 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes jupiterOrbit {
+            from {
+                transform: rotate(0deg) translateX(40px) rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg) translateX(40px) rotate(-360deg);
+            }
+        }
+
+        @keyframes saturnOrbit {
+            from {
+                transform: rotate(0deg) translateX(60px) rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg) translateX(60px) rotate(-360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="infinity">
+        <div class="planet jupiter"></div>
+        <div class="planet saturn"></div>
+    </div>
+</body>
+</html>
