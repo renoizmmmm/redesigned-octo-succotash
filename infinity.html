@@ -1,99 +1,436 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity Animation</title>
+    <title>EREN ADIGÜZEL | Winter Portfolio</title>
+    
+    <!-- Stil Dosyaları -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Müzik -->
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/ukui4v.mp3" type="audio/mpeg">
+    </audio>
+
     <style>
+        :root {
+            --bg-dark: #000000;
+            --text-white: #ffffff;
+        }
+
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            overflow-x: hidden;
         }
 
-        .infinity {
+        /* Yeni Kar Efekti */
+        .snowflake {
+            position: fixed;
+            color: var(--text-white);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: snowfall linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        /* Şeffaf Buton Tasarımı */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+            color: var(--text-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             position: relative;
-            width: 200px;
-            height: 100px;
-            background: linear-gradient(45deg, #f06, transparent);
-            border-radius: 50%;
-            animation: rotate 4s linear infinite;
+            overflow: hidden;
         }
 
-        .infinity::before,
-        .infinity::after {
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-btn::before {
             content: '';
             position: absolute;
-            width: 200px;
-            height: 100px;
-            background: inherit;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .glass-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Profil Resmi */
+        .profile-container {
+            width: 500px;
+            height: 600px;
+            position: relative;
+            perspective: 1000px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.02) rotateY(5deg);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Müzik Player */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
             border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .infinity::before {
-            transform: rotate(120deg);
+        .music-player:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .infinity::after {
-            transform: rotate(240deg);
+        .music-player i {
+            color: var(--text-white);
+            font-size: 24px;
         }
 
-        .planet {
+        /* Navigasyon */
+        .nav-link {
+            position: relative;
+            padding: 10px 20px;
+            color: var(--text-white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--text-white);
+            transition: width 0.3s ease;
         }
 
-        .jupiter {
-            background: url('https://example.com/jupiter.png') no-repeat center center / cover;
-            top: 40px;
-            left: 90px;
-            animation: jupiterOrbit 4s linear infinite;
+        .nav-link:hover::after {
+            width: 80%;
         }
 
-        .saturn {
-            background: url('https://example.com/saturn.png') no-repeat center center / cover;
-            top: 40px;
-            left: 90px;
-            animation: saturnOrbit 4s linear infinite;
+        /* Proje Kartları */
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
         }
 
-        @keyframes jupiterOrbit {
-            from {
-                transform: rotate(0deg) translateX(40px) rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg) translateX(40px) rotate(-360deg);
-            }
+        .project-card:hover::before {
+            transform: translateX(100%);
         }
 
-        @keyframes saturnOrbit {
-            from {
-                transform: rotate(0deg) translateX(60px) rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg) translateX(60px) rotate(-360deg);
-            }
+        .project-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
-    <div class="infinity">
-        <div class="planet jupiter"></div>
-        <div class="planet saturn"></div>
+    <!-- Kar Efekti Container -->
+    <div id="snow-container" class="fixed inset-0 pointer-events-none z-10"></div>
+
+    <!-- Müzik Kontrol -->
+    <div class="music-player" onclick="toggleMusic()">
+        <i class="fas fa-volume-up" id="musicIcon"></i>
     </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-opacity-90 backdrop-blur-lg z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-3xl font-bold">
+                    EREN ADIGÜZEL
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link">Ana Sayfa</a>
+                    <a href="#skills" class="nav-link">Yetenekler</a>
+                    <a href="#projects" class="nav-link">Projeler</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="container mx-auto px-6 pt-24">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl font-bold mb-4">
+                        Merhaba, Ben Eren! 👋
+                    </h1>
+                    <p class="text-2xl mb-6 opacity-90">
+                        Full Stack Developer & UI/UX Designer
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#projects" class="glass-btn">
+                            Projelerimi Gör
+                        </a>
+                        <a href="#" class="glass-btn">
+                            CV İndir
+                        </a>
+                    </div>
+                </div>
+                <div class="profile-container">
+                    <img src="https://r.resimlink.com/Ww7tlvA1QBa.jpg" 
+                         alt="Eren Adıgüzel" 
+                         class="profile-image">
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-24">
+            <h2 class="text-4xl font-bold text-center mb-12">Yeteneklerim</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Frontend -->
+                <div class="project-card">
+                    <h3 class="text-2xl font-bold mb-6">Frontend</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>React</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Vue.js</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="project-card">
+                    <h3 class="text-2xl font-bold mb-6">Backend</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Node.js</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Python</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Design -->
+                <div class="project-card">
+                    <h3 class="text-2xl font-bold mb-6">Design</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>UI/UX</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Figma</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="h-2 bg-white bg-opacity-10 rounded">
+                                <div class="h-full bg-white rounded" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24">
+            <h2 class="text-4xl font-bold text-center mb-12">Projelerim</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="project-card">
+                    <h3 class="text-2xl font-bold mb-4">E-Ticaret Platformu</h3>
+                    <p class="opacity-90 mb-4">Modern ve ölçeklenebilir e-ticaret çözümü</p>
+                    <div class="flex gap-2">
+                        <span class="glass-btn text-sm">React</span>
+                        <span class="glass-btn text-sm">Node.js</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <h3 class="text-2xl font-bold mb-4">AI Chat Uygulaması</h3>
+                    <p class="opacity-90 mb-4">Yapay zeka destekli sohbet platformu</p>
+                    <div class="flex gap-2">
+                        <span class="glass-btn text-sm">Python</span>
+                        <span class="glass-btn text-sm">TensorFlow</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Kar Efekti
+        function createSnowflakes() {
+            const container = document.getElementById('snow-container');
+            const snowflakeCount = 50;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                snowflake.style.opacity = Math.random();
+                snowflake.style.fontSize = `${Math.random() * 10 + 10}px`;
+                container.appendChild(snowflake);
+
+                // Sürekli kar yağışı için
+                snowflake.addEventListener('animationend', () => {
+                    snowflake.style.left = `${Math.random() * 100}vw`;
+                    snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    void snowflake.offsetWidth; // Animasyonu yeniden başlat
+                    snowflake.style.animation = 'none';
+                    setTimeout(() => {
+                        snowflake.style.animation = `snowfall ${snowflake.style.animationDuration} linear infinite`;
+                    }, 10);
+                });
+            }
+        }
+
+        // Müzik Kontrolü
+        const audio = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            } else {
+                audio.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createSnowflakes();
+            audio.volume = 0.3; // Ses seviyesi
+            audio.play().then(() => {
+                isPlaying = true;
+            }).catch(() => {
+                console.log('Müzik otomatik başlatılamadı. Lütfen butona tıklayın.');
+            });
+        });
+    </script>
 </body>
 </html>
